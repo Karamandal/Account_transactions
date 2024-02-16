@@ -7,7 +7,8 @@ with open('Z:\projects\Diplom\Account transactions\data\operations.json', encodi
     # Загружаем содержимое файла в переменную
     data = json.load(file)
 
-def get_transactions():
+
+def get_transaction():
     for transaction in data:
         return transaction
 
@@ -18,13 +19,18 @@ def format_operation(transaction):
 
     # Получаем остальные данные операции
     description = transaction['description']
-    card = transaction['from']
+    from_ = ' '.join(transaction['from'].split(' ')[:-1])
+    card = transaction['from'].split(' ')[-1]
+    to_ = ' '.join(transaction['to'].split(' ')[:-1])
     account = transaction['to'].split(' ')[-1]
     amount = transaction['operationAmount']['amount'] + ' ' + transaction['operationAmount']['currency']['name']
-
     # Формируем отформатированную строку
-    formatted_operation = f'{date} {description}\n{card} - Счет {account}\n{amount}'
+    if from_ == 'Счет':
+        formatted_operation = f'{date} {description}\n{from_} {card[0:4]} {card[4:8]} {card[8:10]}** **** {card[16:]} - {to_} **{account[-4:]}\n{amount}'
+    else:
+        formatted_operation = f'{date} {description}\n{from_} {card[0:5]} {card[5:7]}** **** {card[12:]} - {to_} **{account[-4:]}\n{amount}'
 
     return formatted_operation
 
-print(format_operation(get_transactions()))
+
+print(format_operation(get_transaction()))
