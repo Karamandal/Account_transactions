@@ -1,21 +1,12 @@
-import json
-import os
 from datetime import datetime
 
 
-def print_first_5_transactions():
-    # Открываем файл JSON
-    with open(os.path.join("..", "data", "operations.json"), encoding='utf-8') as file:
-        # Загружаем содержимое файла в переменную
-        data = json.load(file)
-
-    # Выводим первые 5 транзакций
-    for transaction in data:
-        print(f'{format_operation(transaction)}\n')
+def sort_by_date(data):
+    sorted_data = sorted([x for x in data if x.get('date')], key=lambda x: datetime.strptime(x.get('date', ''), "%Y-%m-%dT%H:%M:%S.%f"), reverse=True)
+    return sorted_data
 
 
 def format_operation(transaction):
-    if transaction != {}:
         # Получаем дату из строки и преобразуем в нужный формат
         date = datetime.strptime(transaction['date'], "%Y-%m-%dT%H:%M:%S.%f").strftime("%d.%m.%Y")
         # Получаем остальные данные операции
@@ -37,6 +28,3 @@ def format_operation(transaction):
             # Формируем отформатированную строку
             formatted_operation = f'{date} {description}\n{to_} **{account[-4:]}\n{amount}'
             return formatted_operation
-
-
-print_first_5_transactions()
