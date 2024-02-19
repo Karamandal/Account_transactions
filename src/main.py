@@ -3,7 +3,9 @@ import os
 from utils import sort_by_date
 from utils import format_operation
 
+
 def print_sorted_transactions():
+    """Основной цикл программы"""
     # Открываем файл JSON
     with open(os.path.join("..", "data", "operations.json"), encoding='utf-8') as file:
         # Загружаем содержимое файла в переменную
@@ -13,5 +15,6 @@ def print_sorted_transactions():
         # Выводим отсортированные транзакции
         for transaction in sorted_data[:5]:
             print(f'{format_operation(transaction)}\n')
+
 
 print_sorted_transactions()
